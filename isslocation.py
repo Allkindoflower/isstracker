@@ -22,19 +22,18 @@ def findCountry(latitude, longitude):
     return data_geo
 
 while True:
-    latitude, longitude = getIssLocation()
-    data_geo = findCountry(latitude, longitude)
+    
     try:
+        latitude, longitude = getIssLocation()
+        data_geo = findCountry(latitude, longitude)   
         if 'address' in data_geo:
             if 'country' in data_geo['address']:
                 print(data_geo['address']['country'])
-            elif 'water' in data_geo['address']:
-                print(data_geo['address']['water'])
-            elif 'ocean' in data_geo['address']:
-                print(data_geo['address']['ocean'])
-            else:
-                print("Unknown location")
-    except (KeyError, requests.exceptions.RequestException):
+        else:
+            print('Ocean/Sea')
+    except (KeyError, ValueError, TypeError, requests.exceptions.RequestException):
         print('Cannot reach the location information.')
-    time.sleep(2)
+    time.sleep(20)
     clear_terminal()
+    
+    
