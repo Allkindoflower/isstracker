@@ -9,7 +9,7 @@ load_dotenv()
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def getIssLocation():  
+def get_iss_location():  
     url_iss = os.getenv('url_iss')
     response_iss = requests.get(url_iss)
     data_iss = response_iss.json()
@@ -18,7 +18,7 @@ def getIssLocation():
     return latitude, longitude
          
 
-def findCountry(latitude, longitude):
+def find_country(latitude, longitude):
     key_reversegeo = os.getenv('key_reversegeo')
     url_reversegeo = f'https://us1.locationiq.com/v1/reverse?key={key_reversegeo}&lat={latitude}&lon={longitude}&format=json&'
     response_geo = requests.get(url_reversegeo)
@@ -36,7 +36,7 @@ while True:
             print('Ocean/Sea')
     except (KeyError, ValueError, TypeError, requests.exceptions.RequestException):
         print('Cannot reach the location information.')
-    time.sleep(2)
+    time.sleep(10)
     clear_terminal()
     
     
