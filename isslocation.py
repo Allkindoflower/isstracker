@@ -1,42 +1,49 @@
 import requests
 import time
 import os
-from dotenv import load_dotenv
+import geopandas as geo
+import dotenv
+from shapely.geometry import Point
 
-load_dotenv()
+dotenv.load_dotenv()
 
+oceans = geo.read_file(r"C:\Users\Ugur\Desktop\oceanshapes\World_Seas_IHO_v3.shp")
+lands = geo.read_file(r"C:\Users\Ugur\Desktop\New folder\ne_10m_admin_0_countries.shp")
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_iss_location():  
     url_iss = os.getenv('url_iss')
-    response_iss = requests.get(url_iss)
+    response_iss = requests.get(url_iss, timeout=5)
     data_iss = response_iss.json()
-    latitude = data_iss['iss_position']['latitude']
     longitude = data_iss['iss_position']['longitude']
-    return latitude, longitude
-         
-
-def find_country(latitude, longitude):
-    key_reversegeo = os.getenv('key_reversegeo')
-    url_reversegeo = f'https://us1.locationiq.com/v1/reverse?key={key_reversegeo}&lat={latitude}&lon={longitude}&format=json&'
-    response_geo = requests.get(url_reversegeo)
-    data_geo = response_geo.json()
-    return data_geo
+    latitude = data_iss['iss_position']['latitude']
+    return float(latitude), float(longitude)
 
 while True: 
     try:
-        latitude, longitude = getIssLocation()
-        data_geo = findCountry(latitude, longitude)   
-        if 'address' in data_geo:
-            if 'country' in data_geo['address']:
-                print(data_geo['address']['country'])
+        latitude, longitude = get_iss_location()
+        point = Point(longitude, latitude)
+        possible_ocean_idxs = list(oceans.sindex.intersection(point.bounds))
+        possible_oceans = oceans.iloc[possible_ocean_idxs]
+        ocean_match = possible_oceans[possible_oceans.contains(point)]
+
+        possible_land_idxs = list(lands.sindex.intersection(point.bounds))
+        possible_lands = lands.iloc[possible_land_idxs]
+        lands_match = possible_lands[possible_lands.contains(point)]
+        print(f"Lat: {latitude}, Lon: {longitude}")
+        if not ocean_match.empty:
+            print(ocean_match.iloc[0]['NAME'])
+        elif not lands_match.empty:
+            print(lands_match.iloc[0]['ADMIN'])
         else:
-            print('Ocean/Sea')
-    except (KeyError, ValueError, TypeError, requests.exceptions.RequestException):
-        print('Cannot reach the location information.')
+            print('ISS over unknown area')
+ 
+    except Exception as e:
+        print(f'Error: {e}')
     time.sleep(10)
     clear_terminal()
     
+
     
