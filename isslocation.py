@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 oceans_path = os.path.join(BASE_DIR , "data", "World_Seas_IHO_v3.shp")
 oceans = geo.read_file(oceans_path)
 
-lands_path = os.path.join(BASE_DIR, "data", "/ne_10m_admin_0_countries.shp")
+lands_path = os.path.join(BASE_DIR, "data", "ne_10m_admin_0_countries.shp")
 lands = geo.read_file(lands_path)
 
 
