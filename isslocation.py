@@ -7,8 +7,13 @@ from shapely.geometry import Point
 
 dotenv.load_dotenv()
 
-oceans = geo.read_file(r"C:\Users\Ugur\Desktop\oceanshapes\World_Seas_IHO_v3.shp")
-lands = geo.read_file(r"C:\Users\Ugur\Desktop\New folder\ne_10m_admin_0_countries.shp")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+oceans_path = os.path.join(BASE_DIR , "data", "World_Seas_IHO_v3.shp")
+oceans = geo.read_file(oceans_path)
+
+lands_path = os.path.join(BASE_DIR, "data", "/ne_10m_admin_0_countries.shp")
+lands = geo.read_file(lands_path)
+
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -25,6 +30,7 @@ while True:
     try:
         latitude, longitude = get_iss_location()
         point = Point(longitude, latitude)
+        #Code below quickens the search
         possible_ocean_idxs = list(oceans.sindex.intersection(point.bounds))
         possible_oceans = oceans.iloc[possible_ocean_idxs]
         ocean_match = possible_oceans[possible_oceans.contains(point)]
@@ -32,6 +38,7 @@ while True:
         possible_land_idxs = list(lands.sindex.intersection(point.bounds))
         possible_lands = lands.iloc[possible_land_idxs]
         lands_match = possible_lands[possible_lands.contains(point)]
+        #Code above quickens the search
         print(f"Lat: {latitude}, Lon: {longitude}")
         if not ocean_match.empty:
             print(ocean_match.iloc[0]['NAME'])
