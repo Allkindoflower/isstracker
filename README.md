@@ -1,9 +1,8 @@
 # isstracker
 This program tracks the location of the ISS
-by getting the latitude and longitude of the ISS,
-then using another API to reverse geocode the location,
-then parse the JSON file to return which country the ISS
-is passing over.
+by using polygon-based detection to pinpoint the name of the 
+country or the ocean ISS is going over right now
+attention: the program is inefficient and slow to get results
 
 
 
