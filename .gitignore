@@ -1,1 +1,7 @@
 .env
+data/
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
