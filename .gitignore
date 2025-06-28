@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .env
 data/
 *.shp
@@ -5,3 +6,6 @@ data/
 *.dbf
 *.prj
 *.cpg
+=======
+.env
+>>>>>>> 56a3466ae553b779a6ba1dc15f6f98899da4bf14
