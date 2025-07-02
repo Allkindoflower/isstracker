@@ -8,12 +8,13 @@ from shapely.geometry import Point
 dotenv.load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-oceans_path = os.path.join(BASE_DIR , "data", "World_Seas_IHO_v3.shp")
-oceans = geo.read_file(oceans_path)
+data_dir = os.path.join(BASE_DIR, 'data')
 
-lands_path = os.path.join(BASE_DIR, "data", "ne_10m_admin_0_countries.shp")
+lands_path = os.path.join(data_dir, 'countries.geojson')
+oceans_path = os.path.join(data_dir, 'oceans.geojson')
+
 lands = geo.read_file(lands_path)
-
+oceans = geo.read_file(oceans_path)
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -30,7 +31,7 @@ while True:
     try:
         latitude, longitude = get_iss_location()
         point = Point(longitude, latitude)
-        #Code below quickens the search
+        #Code below quickens the search by eliminating far off points
         possible_ocean_idxs = list(oceans.sindex.intersection(point.bounds))
         possible_oceans = oceans.iloc[possible_ocean_idxs]
         ocean_match = possible_oceans[possible_oceans.contains(point)]
@@ -38,8 +39,8 @@ while True:
         possible_land_idxs = list(lands.sindex.intersection(point.bounds))
         possible_lands = lands.iloc[possible_land_idxs]
         lands_match = possible_lands[possible_lands.contains(point)]
-        #Code above quickens the search
-        print(f"Lat: {latitude}, Lon: {longitude}")
+        #Code above quickens the search by eliminating far off points
+        print(f'Lat: {latitude}, Lon: {longitude}')
         if not ocean_match.empty:
             print(ocean_match.iloc[0]['NAME'])
         elif not lands_match.empty:
