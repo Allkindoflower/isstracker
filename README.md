@@ -1,5 +1,6 @@
 ISS Location Tracker
 A FastAPI web application that tracks the International Space Station's current position and tells you which country or ocean it's flying over — using real geospatial data.
+Feel free to contact me if you find bugs or want to contribute
 
 What it does
 
@@ -31,11 +32,8 @@ Clone the repo
 git clone <repository-url>
 cd isstracker
 
-Save this as a geojson file at /data in your project root: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson 
-And download the oceans shapefile here and send it to the data folder also: 
 Run the conversion script once to create GeoJSON files:
-python convert_to_geojson.py
-note: the country file is fine and comes in geojson, change the extension if you have to, but the ocean files are .shp, so we need to convert them
+python convert_to_json.py
 
 Set your ISS API URL in a .env file:
 URL_ISS=https://api.open-notify.org/iss-now.json
