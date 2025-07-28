@@ -1,72 +1,95 @@
-ISS Location Tracker — Countries & Oceans Edition
-A simple Python script that tracks the International Space Station’s current position and tells you which country or ocean it’s flying over — using real geospatial data.
+ISS Location Tracker
+A FastAPI web application that tracks the International Space Station's current position and tells you which country or ocean it's flying over — using real geospatial data.
 
 What it does
+
 Fetches live ISS latitude and longitude from a public API
-
 Uses detailed country and ocean boundaries (Natural Earth datasets)
+Efficiently determines whether the ISS is over land or water through REST API endpoints
+Provides real-time location data via JSON responses
 
-Efficiently determines whether the ISS is over land or water, and prints the name
-
-Runs continuously, updating every 10 seconds with a clear console display
 
 Why this project?
-I wanted to challenge myself by working with:
+Because I’m curious about space. And code. And what happens when you mix the two.
 
+Features:
 Geospatial data and shapefiles (converted to GeoJSON for speed)
-
 Spatial queries using GeoPandas and Shapely
-
 Handling external APIs and environment variables securely
-
 Optimizing slow geodata processing by simplifying polygons and indexing
+Building responsive web APIs with FastAPI
 
-How to use
+
+API Endpoints
+
+GET /iss-location - Returns current ISS position with country/ocean information
+
+
+How to use:
+
 Clone the repo
+git clone <repository-url>
+cd isstracker
 
-Download the required Natural Earth shapefiles (ne_10m_admin_0_countries.shp and World_Seas_IHO_v3.shp) into the data folder
-
+Save this as a geojson file at /data in your project root: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson 
+And download the oceans shapefile here and send it to the data folder also: 
 Run the conversion script once to create GeoJSON files:
-
 python convert_to_geojson.py
+note: the country file is fine and comes in geojson, change the extension if you have to, but the ocean files are .shp, so we need to convert them
+
 Set your ISS API URL in a .env file:
+URL_ISS=https://api.open-notify.org/iss-now.json
 
-url_iss=https://api.open-notify.org/iss-now.json
+Install dependencies:
+pip install -r requirements.txt
 
-Run the tracker:
+Run the FastAPI server:
+uvicorn main:app --reload
 
-python iss_tracker.py
+Access the API at http://localhost:8000 or visit http://localhost:8000/docs for interactive API documentation
 
 
-Notes
-The ocean shapefile is quite large and can take a few minutes to process when converting. This is a one-time step.
+Example Response:
 
-Geometries are simplified to speed up location checks; this might slightly reduce accuracy over complex coastlines.
-
-The tracker refreshes every 10 seconds — adjust the interval in the script if needed.
+json{
+  "iss_position": {
+    "latitude": 45.2841,
+    "longitude": -75.6762
+  },
+  "location": {
+    "type": "country",
+    "name": "Canada"
+  }
+}
 
 Requirements
+
 Python 3.8+
+FastAPI
+Uvicorn (ASGI server)
+GeoPandas
+Shapely
+Requests
+Python-dotenv
 
-Packages: geopandas, shapely, requests, python-dotenv
+Install all packages with:
+pip install fastapi uvicorn geopandas shapely requests python-dotenv
+Or use the requirements.txt file:
+pip install -r requirements.txt
 
-Install packages with:
+Development
+Run in development mode with auto-reload:
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
+Possible future improvements
 
-pip install geopandas shapely requests python-dotenv
-
-Future improvements
-Add GUI/web interface
-
+Add GUI/web interface with interactive map
 Cache recent locations to reduce redundant checks
-
 More detailed region info (e.g., states, seas)
-
 Use a faster spatial database (like PostGIS) for larger scale
+Add WebSocket support for real-time updates
+Implement rate limiting and API authentication
+
 
 License
-MIT License — feel free to use and modify!
-
-
-
-
+MIT License — It's yours, baby. Use it however you like!
