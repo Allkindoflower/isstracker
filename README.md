@@ -50,15 +50,11 @@ Access the API at http://localhost:8000 or visit http://localhost:8000/docs for 
 Example Response:
 
 json{
-  "iss_position": {
-    "latitude": 45.2841,
-    "longitude": -75.6762
-  },
-  "location": {
-    "type": "country",
     "name": "Canada"
-  }
 }
+
+Simple, yet beautiful.
+
 
 Requirements
 
