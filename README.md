@@ -75,12 +75,12 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 Possible Future Improvements:
 
--Add GUI/web interface with interactive map
--Cache recent locations to reduce redundant checks
--Provide more detailed region info (e.g., states, seas)
--Use a faster spatial database (like PostGIS) for larger scale
--Add WebSocket support for real-time updates
--Implement rate limiting and API authentication
+-Add GUI/web interface with interactive map<br>
+-Cache recent locations to reduce redundant checks<br>
+-Provide more detailed region info (e.g., states, seas)<br>
+-Use a faster spatial database (like PostGIS) for larger scale<br>
+-Add WebSocket support for real-time updates<br>
+-Implement rate limiting and API authentication<br>
 
 License
 MIT License — It’s yours, baby. Use it however you like!
