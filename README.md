@@ -1,39 +1,37 @@
-ISS Location Tracker
-A FastAPI web application that tracks the International Space Station’s current position and tells you which country or ocean it’s flying over — using real geospatial data.
+# ISS Location Tracker
+
+A FastAPI web application that tracks the International Space Station's current position and tells you which country or ocean it's flying over — using real geospatial data.
 
 Feel free to contact me if you find bugs or want to contribute.
 
-What It Does
-Fetches live ISS latitude and longitude from a public API
+## What It Does
 
-Uses detailed country and ocean boundaries (Natural Earth datasets)
+- Fetches live ISS latitude and longitude from a public API
+- Uses detailed country and ocean boundaries (Natural Earth datasets)
+- Efficiently determines whether the ISS is over land or water through REST API endpoints
+- Provides real-time location data via JSON responses
 
-Efficiently determines whether the ISS is over land or water through REST API endpoints
+## Why This Project?
 
-Provides real-time location data via JSON responses
-
-Why This Project?
 Because I’m curious about space. And code. And what happens when you mix the two.
 
-Features
-Geospatial data and shapefiles (converted to GeoJSON for speed)
+## Features
 
-Spatial queries using GeoPandas and Shapely
+- Geospatial data and shapefiles (converted to GeoJSON for speed)
+- Spatial queries using GeoPandas and Shapely
+- Handling external APIs and environment variables securely
+- Optimizing slow geodata processing by simplifying polygons and indexing
+- Building responsive web APIs with FastAPI
 
-Handling external APIs and environment variables securely
+## API Endpoints
 
-Optimizing slow geodata processing by simplifying polygons and indexing
+**GET** `/iss-location`
 
-Building responsive web APIs with FastAPI
-
-API Endpoints
-GET /iss-location
 Returns current ISS position with country/ocean information in JSON format.
 
-How to Use
-bash
-Copy
-Edit
+## How to Use
+
+```bash
 git clone <repo_url>
 cd isstracker
 
@@ -48,58 +46,40 @@ pip install -r requirements.txt
 
 # Run the FastAPI server
 uvicorn main:app --reload
-Access the API at: http://localhost:8000
+
+Access the API at http://localhost:8000
 Interactive docs: http://localhost:8000/docs
 
-Example Response
-json
-Copy
-Edit
+Example response:
+
 {
   "name": "Canada"
 }
-Simple, yet beautiful.
 
 Requirements
 Python 3.8+
-
 FastAPI
-
 Uvicorn (ASGI server)
-
 GeoPandas
-
 Shapely
-
 Requests
-
 Python-dotenv
 
 Install packages via:
-
-bash
-Copy
-Edit
 pip install -r requirements.txt
-Development
+
 Run in development mode with auto-reload:
-
-bash
-Copy
-Edit
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
-Possible Future Improvements
+
+Possible Future Improvements:
+
 Add GUI/web interface with interactive map
-
 Cache recent locations to reduce redundant checks
-
 Provide more detailed region info (e.g., states, seas)
-
 Use a faster spatial database (like PostGIS) for larger scale
-
 Add WebSocket support for real-time updates
-
 Implement rate limiting and API authentication
 
 License
 MIT License — It’s yours, baby. Use it however you like!
+
