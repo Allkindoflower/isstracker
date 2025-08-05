@@ -1,69 +1,64 @@
-ISS Location Tracker
+# ISS Location Tracker
+
 A FastAPI web application that tracks the International Space Station's current position and tells you which country or ocean it's flying over — using real geospatial data.
 
-What it does
+Feel free to contact me at bastugugur85@gmail.com if you find bugs or want to contribute.
 
-Fetches live ISS latitude and longitude from a public API
-Uses detailed country and ocean boundaries (Natural Earth datasets)
-Efficiently determines whether the ISS is over land or water through REST API endpoints
-Provides real-time location data via JSON responses
+## What It Does
 
+- Fetches live ISS latitude and longitude from a public API
+- Uses detailed country and ocean boundaries (Natural Earth datasets)
+- Efficiently determines whether the ISS is over land or water through REST API endpoints
+- Provides real-time location data via JSON responses
 
-Why this project?
+## Why This Project?
+
 Because I’m curious about space. And code. And what happens when you mix the two.
 
-Features:
-Geospatial data and shapefiles (converted to GeoJSON for speed)
-Spatial queries using GeoPandas and Shapely
-Handling external APIs and environment variables securely
-Optimizing slow geodata processing by simplifying polygons and indexing
-Building responsive web APIs with FastAPI
+## Features
 
+- Geospatial data and shapefiles (converted to GeoJSON for speed)
+- Spatial queries using GeoPandas and Shapely
+- Handling external APIs and environment variables securely
+- Optimizing slow geodata processing by simplifying polygons and indexing
+- Building responsive web APIs with FastAPI
 
-API Endpoints
+## API Endpoints
 
-GET /iss-location - Returns current ISS position with country/ocean information
+**GET** `/iss-location`
 
+Returns current ISS position with country/ocean information in JSON format.
 
-How to use:
+## How to Use
 
-Clone the repo
-git clone <repository-url>
-cd isstracker
+```bash
+fork my repo
+'git clone https://github.com/YOUR-USERNAME/isstracker' using git bash
+cd /path/to/isstracker
 
-Save this as a geojson file at /data in your project root: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson 
-And download the oceans shapefile here and send it to the data folder also: 
-Run the conversion script once to create GeoJSON files:
-python convert_to_geojson.py
-note: the country file is fine and comes in geojson, change the extension if you have to, but the ocean files are .shp, so we need to convert them
+# Run conversion script once to create GeoJSON files
+python convert_to_json.py
 
-Set your ISS API URL in a .env file:
-URL_ISS=https://api.open-notify.org/iss-now.json
+# Create a .env file with your ISS API URL
+echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
 
-Install dependencies:
+# Install dependencies
 pip install -r requirements.txt
 
-Run the FastAPI server:
+# Run the FastAPI server
 uvicorn main:app --reload
+```
 
-Access the API at http://localhost:8000 or visit http://localhost:8000/docs for interactive API documentation
+Access the API at [http://localhost:8000](http://localhost:8000/docs)
 
 
-Example Response:
+Example response:
 
-json{
-  "iss_position": {
-    "latitude": 45.2841,
-    "longitude": -75.6762
-  },
-  "location": {
-    "type": "country",
-    "name": "Canada"
-  }
+{
+  "name": "Canada"
 }
 
-Requirements
-
+## Requirements
 Python 3.8+
 FastAPI
 Uvicorn (ASGI server)
@@ -72,24 +67,21 @@ Shapely
 Requests
 Python-dotenv
 
-Install all packages with:
-pip install fastapi uvicorn geopandas shapely requests python-dotenv
-Or use the requirements.txt file:
+Install packages via:
 pip install -r requirements.txt
 
-Development
 Run in development mode with auto-reload:
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-Possible future improvements
+Possible Future Improvements:
 
 Add GUI/web interface with interactive map
 Cache recent locations to reduce redundant checks
-More detailed region info (e.g., states, seas)
+Provide more detailed region info (e.g., states, seas)
 Use a faster spatial database (like PostGIS) for larger scale
 Add WebSocket support for real-time updates
 Implement rate limiting and API authentication
 
-
 License
-MIT License — It's yours, baby. Use it however you like!
+MIT License — It’s yours, baby. Use it however you like!
+

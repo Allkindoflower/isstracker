@@ -11,6 +11,7 @@ dotenv.load_dotenv()
 
 app = FastAPI()
 
+#This is for possible frontend work:
 #app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
