@@ -46,6 +46,7 @@ pip install -r requirements.txt
 
 # Run the FastAPI server
 uvicorn main:app --reload
+```
 
 Access the API at http://localhost:8000
 Interactive docs: http://localhost:8000/docs
