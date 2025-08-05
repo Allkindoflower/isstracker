@@ -2,7 +2,7 @@
 
 A FastAPI web application that tracks the International Space Station's current position and tells you which country or ocean it's flying over — using real geospatial data.
 
-Feel free to contact me if you find bugs or want to contribute.
+Feel free to contact me at bastugugur85@gmail.com if you find bugs or want to contribute.
 
 ## What It Does
 
@@ -32,8 +32,9 @@ Returns current ISS position with country/ocean information in JSON format.
 ## How to Use
 
 ```bash
-git clone <repo_url>
-cd isstracker
+fork my repo
+'git clone https://github.com/YOUR-USERNAME/isstracker' using git bash
+cd /path/to/isstracker
 
 # Run conversion script once to create GeoJSON files
 python convert_to_json.py
@@ -48,8 +49,8 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-Access the API at http://localhost:8000
-Interactive docs: http://localhost:8000/docs
+Access the API at [http://localhost:8000](http://localhost:8000/docs)
+
 
 Example response:
 
@@ -57,7 +58,7 @@ Example response:
   "name": "Canada"
 }
 
-Requirements
+## Requirements
 Python 3.8+
 FastAPI
 Uvicorn (ASGI server)
