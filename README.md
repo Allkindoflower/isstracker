@@ -36,11 +36,8 @@ fork my repo
 'git clone https://github.com/YOUR-USERNAME/isstracker' using git bash
 cd /path/to/isstracker
 
-# Run conversion script once to create GeoJSON files
-python convert_to_json.py
-
 # Create a .env file with your ISS API URL
-echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
+echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env or manually copy it into your env file
 
 # Install dependencies
 pip install -r requirements.txt
