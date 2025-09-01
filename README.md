@@ -1,135 +1,108 @@
 ISS Location Tracker
 
-A FastAPI web application that tracks the International Space Station's (ISS) current position and tells you which country or ocean it is flying over --- using real geospatial data.
+A FastAPI web application that tracks the **International Space Station's (ISS)** current position and tells you which country or ocean it is flying over — using real geospatial data.
 
-TABLE OF CONTENTS
+---
 
-1. About
+## Table of Contents
 
-2. Features
+- [About](#about)
+- [Features](#features)
+- [API Endpoints](#api-endpoints)
+- [Example Response](#example-response)
+- [Getting Started](#getting-started)
+- [Tech Stack](#tech-stack)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
 
-3. API Endpoints
+---
 
-4. Example Response
-
-5. Getting Started
-
-6. Tech Stack
-
-7. Future Improvements
-
-8. Contributing
-
-9. License
-
-ABOUT
+## About
 
 This project fetches live ISS latitude and longitude from a public API, uses detailed country and ocean boundaries (Natural Earth datasets), and efficiently determines whether the ISS is over land or water. It provides this data via REST API endpoints in real-time.
 
-Why this project?
+**Why this project?**  
+Because I’m curious about space and coding, and I wanted to combine the two.
 
-Because I'm curious about space and coding, and I wanted to combine the two.
+---
 
 FEATURES
 
-- Fetch live ISS coordinates from a public API
+- Fetch live ISS coordinates from a public API  
+- Use geospatial data with GeoPandas and Shapely  
+- Determine whether the ISS is over land or ocean  
+- REST API endpoints returning JSON  
+- Efficient handling of large geodata (polygon simplification, indexing)  
+- Securely handle environment variables for external APIs  
 
-- Use geospatial data with GeoPandas and Shapely
+---
 
-- Determine whether the ISS is over land or ocean
+## API Endpoints
 
-- REST API endpoints returning JSON
-
-- Efficient handling of large geodata (polygon simplification, indexing)
-
-- Securely handle environment variables for external APIs
-
-API ENDPOINTS
-
-GET /iss-location
+### `GET /iss-location`
 
 Returns the current ISS position along with the country or ocean it is above.
 
-EXAMPLE RESPONSES
+---
 
-{
+## Example Response
 
-  "name": "Canada"
+```json
+[
+  { "name": "Canada" },
+  { "name": "North Atlantic Ocean" }
+]
+```
+## Getting Started
 
-},
+### Installation
 
-{
 
-  "name": "North Atlantic Ocean"
+### Fork the repository on GitHub
 
-}
+### Clone the repository
+git clone https://github.com/YOUR-USERNAME/isstracker
+cd isstracker
 
-GETTING STARTED
 
-Prerequisites:
+### (Optional) Create a virtual environment
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
 
-- Python 3.8+
+### Create a .env file (recommended)
+echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
+or manually copy the URL into the .env file
 
-- Git
+### Install dependencies
+pip install -r requirements.txt
 
-Installation:
+### Start FastAPI server in development mode with auto-reload
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-1. Clone the repository:
+### Tech Stack
 
-   git clone https://github.com/YOUR-USERNAME/isstracker
+- **Language:** Python 3.8+  
+- **Framework:** FastAPI  
+- **Server:** Uvicorn (ASGI)  
+- **Geospatial:** GeoPandas, Shapely  
+- **API Requests:** Requests  
+- **Environment Variables:** python-dotenv  
 
-   cd isstracker
+---
 
-2. Create a .env file (optional, recommended):
+## Contributing
 
-   echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
+Feel free to open issues or submit pull requests.  
+Contact me at **bastugugur85@gmail.com** for bug reports, suggestions, or collaboration.
 
-   or manually copy the URL into the .env file
+---
 
-3. Install dependencies:
+## License
 
-   pip install -r requirements.txt
+This project is licensed under the **MIT License** — Uğur Baştuğ
 
-Running the Server:
+## Additional Notes
 
-Start FastAPI server in development mode with auto-reload:
-
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
-Access the API documentation at: http://localhost:8000/docs
-
-TECH STACK
-
-- Language: Python 3.8+
-
-- Framework: FastAPI
-
-- Server: Uvicorn (ASGI)
-
-- Geospatial: GeoPandas, Shapely
-
-- API Requests: Requests
-
-- Environment Variables: python-dotenv
-
-FUTURE IMPROVEMENTS
-
-- Add a GUI/web interface with an interactive map
-
-- Cache recent locations to reduce redundant processing
-
-- Use a faster spatial database (e.g., PostGIS) for scalability
-
-- Add WebSocket support for real-time updates
-
-- Implement rate limiting and API authentication
-
-CONTRIBUTING
-
-Feel free to open issues or submit pull requests.
-
-Contact: bastugugur85@gmail.com for bug reports, suggestions, or collaboration.
-
-LICENSE
-
-MIT License --- Uğur Baştuğ
+- The ISS is scheduled to be deorbited and landed in the ocean around 2030. I plan to hardcode the landing site in the app at that time. The project may be updated again if revisited in the future.
