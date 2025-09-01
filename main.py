@@ -5,6 +5,7 @@ import os
 import geopandas as gpd
 from shapely.geometry import Point
 import dotenv
+from datetime import datetime, timezone
 
 
 dotenv.load_dotenv()
@@ -37,6 +38,22 @@ async def iss_location():
     url_iss = os.getenv('url_iss')
     if not url_iss:
         raise HTTPException(status_code=500, detail="ISS API URL not configured")
+    # --- Forward-looking ISS retirement logic ---
+    # At the end of 2030, the ISS will be deorbited.
+    # The API will automatically return the landing site and a note
+    # instead of live coordinates, so no manual updates are required.
+    ISS_RETIREMENT_YEAR = 2031
+    LANDING_SITE = "South Pacific Ocean"
+    NOTE = "The ISS has been deorbited and this is its landing site."
+
+    current_year = datetime.now(timezone.utc).year
+    if current_year >= ISS_RETIREMENT_YEAR:
+        return {
+            "latitude": None,
+            "longitude": None,
+            "location": LANDING_SITE,
+            "note": NOTE
+        }
     try:
         response = requests.get(url_iss, timeout=10)
         response.raise_for_status()
