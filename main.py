@@ -1,18 +1,27 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 import requests
 import os
 import geopandas as gpd
 from shapely.geometry import Point
 import dotenv
-from fastapi.staticfiles import StaticFiles
 
 
 dotenv.load_dotenv()
 
 app = FastAPI()
 
-#This is for possible frontend work:
-#app.mount("/", StaticFiles(directory="static", html=True), name="static")
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 data_dir = os.path.join(BASE_DIR, 'data')
@@ -29,7 +38,7 @@ async def iss_location():
     if not url_iss:
         raise HTTPException(status_code=500, detail="ISS API URL not configured")
     try:
-        response = requests.get(url_iss, timeout=5)
+        response = requests.get(url_iss, timeout=10)
         response.raise_for_status()
         data = response.json()
         longitude = float(data['iss_position']['longitude'])

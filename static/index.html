@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ISS Tracker Map</title>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+<style>
+  #map { height: 90vh; width: 100%; }
+  body { margin: 0; font-family: Arial, sans-serif; }
+  #info { padding: 10px; background: #fff; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="info">Loading ISS location...</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([0, 0], 2);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+  }).addTo(map);
+
+  let marker = L.marker([0, 0]).addTo(map);
+
+  async function updateISS() {
+    try {
+      const res = await fetch('/iss-location');
+      const data = await res.json();
+
+      const { latitude, longitude, location } = data;
+      marker.setLatLng([latitude, longitude]);
+      map.setView([latitude, longitude], 4);
+
+      document.getElementById('info').textContent = 
+        `ISS is currently over: ${location} (Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)})`;
+    } catch (e) {
+      document.getElementById('info').textContent = 'Failed to load ISS location.';
+    }
+  }
+
+  // Initial load
+  updateISS();
+
+  // Update every 5 seconds
+  setInterval(updateISS, 5000);
+</script>
+</body>
+</html>

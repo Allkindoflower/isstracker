@@ -1,87 +1,135 @@
-# ISS Location Tracker
+ISS Location Tracker
 
-A FastAPI web application that tracks the International Space Station's current position and tells you which country or ocean it's flying over — using real geospatial data.
+A FastAPI web application that tracks the International Space Station's (ISS) current position and tells you which country or ocean it is flying over --- using real geospatial data.
 
-Feel free to contact me at bastugugur85@gmail.com if you find bugs or want to contribute.
+TABLE OF CONTENTS
 
-## What It Does
+1. About
 
-- Fetches live ISS latitude and longitude from a public API
-- Uses detailed country and ocean boundaries (Natural Earth datasets)
-- Efficiently determines whether the ISS is over land or water through REST API endpoints
-- Provides real-time location data via JSON responses
+2. Features
 
-## Why This Project?
+3. API Endpoints
 
-Because I’m curious about space. And code. And what happens when you mix the two.
+4. Example Response
 
-## Features
+5. Getting Started
 
-- Geospatial data and shapefiles (converted to GeoJSON for speed)
-- Spatial queries using GeoPandas and Shapely
-- Handling external APIs and environment variables securely
-- Optimizing slow geodata processing by simplifying polygons and indexing
-- Building responsive web APIs with FastAPI
+6. Tech Stack
 
-## API Endpoints
+7. Future Improvements
 
-**GET** `/iss-location`
+8. Contributing
 
-Returns current ISS position with country/ocean information in JSON format.
+9. License
 
-## How to Use
+ABOUT
 
-```bash
-fork my repo
-'git clone https://github.com/YOUR-USERNAME/isstracker' using git bash
-cd /path/to/isstracker
+This project fetches live ISS latitude and longitude from a public API, uses detailed country and ocean boundaries (Natural Earth datasets), and efficiently determines whether the ISS is over land or water. It provides this data via REST API endpoints in real-time.
 
-# Run conversion script once to create GeoJSON files
-python convert_to_json.py
+Why this project?
 
-# Create a .env file with your ISS API URL
-echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
+Because I'm curious about space and coding, and I wanted to combine the two.
 
-# Install dependencies
-pip install -r requirements.txt
+FEATURES
 
-# Run the FastAPI server
-uvicorn main:app --reload
-```
+- Fetch live ISS coordinates from a public API
 
-Access the API at [http://localhost:8000](http://localhost:8000/docs)
+- Use geospatial data with GeoPandas and Shapely
 
+- Determine whether the ISS is over land or ocean
 
-Example response:
+- REST API endpoints returning JSON
+
+- Efficient handling of large geodata (polygon simplification, indexing)
+
+- Securely handle environment variables for external APIs
+
+API ENDPOINTS
+
+GET /iss-location
+
+Returns the current ISS position along with the country or ocean it is above.
+
+EXAMPLE RESPONSES
 
 {
-  "name": "Canada"
+
+  "name": "Canada"
+
+},
+
+{
+
+  "name": "North Atlantic Ocean"
+
 }
 
-## Requirements
-Python 3.8+
-FastAPI
-Uvicorn (ASGI server)
-GeoPandas
-Shapely
-Requests
-Python-dotenv
+GETTING STARTED
 
-Install packages via:
-pip install -r requirements.txt
+Prerequisites:
 
-Run in development mode with auto-reload:
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+- Python 3.8+
 
-Possible Future Improvements:
+- Git
 
-Add GUI/web interface with interactive map
-Cache recent locations to reduce redundant checks
-Provide more detailed region info (e.g., states, seas)
-Use a faster spatial database (like PostGIS) for larger scale
-Add WebSocket support for real-time updates
-Implement rate limiting and API authentication
+Installation:
 
-License
-MIT License — It’s yours, baby. Use it however you like!
+1. Clone the repository:
 
+   git clone https://github.com/YOUR-USERNAME/isstracker
+
+   cd isstracker
+
+2. Create a .env file (optional, recommended):
+
+   echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
+
+   or manually copy the URL into the .env file
+
+3. Install dependencies:
+
+   pip install -r requirements.txt
+
+Running the Server:
+
+Start FastAPI server in development mode with auto-reload:
+
+   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+Access the API documentation at: http://localhost:8000/docs
+
+TECH STACK
+
+- Language: Python 3.8+
+
+- Framework: FastAPI
+
+- Server: Uvicorn (ASGI)
+
+- Geospatial: GeoPandas, Shapely
+
+- API Requests: Requests
+
+- Environment Variables: python-dotenv
+
+FUTURE IMPROVEMENTS
+
+- Add a GUI/web interface with an interactive map
+
+- Cache recent locations to reduce redundant processing
+
+- Use a faster spatial database (e.g., PostGIS) for scalability
+
+- Add WebSocket support for real-time updates
+
+- Implement rate limiting and API authentication
+
+CONTRIBUTING
+
+Feel free to open issues or submit pull requests.
+
+Contact: bastugugur85@gmail.com for bug reports, suggestions, or collaboration.
+
+LICENSE
+
+MIT License --- Uğur Baştuğ
