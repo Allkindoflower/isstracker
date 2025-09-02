@@ -12,12 +12,11 @@ from shapely.geometry import Point
 import dotenv
 from datetime import datetime, timezone
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 dotenv.load_dotenv()
 
 app = FastAPI()
-
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,6 +37,10 @@ oceans_path = os.path.join(data_dir, 'oceans.geojson')
 lands = gpd.read_file(lands_path)
 oceans = gpd.read_file(oceans_path)
 
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/static/index.html")\
+    
 @app.get("/iss-location")
 async def iss_location():
     url_iss = os.getenv('url_iss')
