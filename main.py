@@ -1,3 +1,8 @@
+# At the end of 2030, the ISS will be deorbited.
+# The API will automatically return the landing site and a note
+# instead of live coordinates, so no manual updates are required.
+
+
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 import requests
@@ -6,13 +11,13 @@ import geopandas as gpd
 from shapely.geometry import Point
 import dotenv
 from datetime import datetime, timezone
-
+from fastapi.middleware.cors import CORSMiddleware
 
 dotenv.load_dotenv()
 
 app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,7 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 data_dir = os.path.join(BASE_DIR, 'data')
@@ -38,28 +43,22 @@ async def iss_location():
     url_iss = os.getenv('url_iss')
     if not url_iss:
         raise HTTPException(status_code=500, detail="ISS API URL not configured")
-    # --- Forward-looking ISS retirement logic ---
-    # At the end of 2030, the ISS will be deorbited.
-    # The API will automatically return the landing site and a note
-    # instead of live coordinates, so no manual updates are required.
-    ISS_RETIREMENT_YEAR = 2031
-    LANDING_SITE = "South Pacific Ocean"
-    NOTE = "The ISS has been deorbited and this is its landing site."
-
-    current_year = datetime.now(timezone.utc).year
-    if current_year >= ISS_RETIREMENT_YEAR:
-        return {
-            "latitude": None,
-            "longitude": None,
-            "location": LANDING_SITE,
-            "note": NOTE
-        }
+    
     try:
-        response = requests.get(url_iss, timeout=10)
+        response = requests.get(url_iss, timeout=15)
         response.raise_for_status()
         data = response.json()
         longitude = float(data['iss_position']['longitude'])
         latitude = float(data['iss_position']['latitude'])
+
+        current_year = datetime.now(timezone.utc).year
+        if current_year >= 2031: #Check for ISS retirement year
+            return {
+                "latitude": latitude,
+                "longitude": longitude,
+                "location": "South Pacific Ocean",
+                "note": "The ISS has been deorbited and this is its landing site."
+            }
         point = Point(longitude, latitude)
 
         possible_ocean_idxs = list(oceans.sindex.intersection(point.bounds))
