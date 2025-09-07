@@ -46,22 +46,15 @@ async def iss_location():
     url_iss = os.getenv('url_iss')
     if not url_iss:
         raise HTTPException(status_code=500, detail="ISS API URL not configured")
-    
+    retirement = iss_retirement_check()
+    if retirement:
+        return retirement
     try:
         response = requests.get(url_iss, timeout=15)
         response.raise_for_status()
         data = response.json()
         longitude = float(data['iss_position']['longitude'])
         latitude = float(data['iss_position']['latitude'])
-
-        current_year = datetime.now(timezone.utc).year
-        if current_year >= 2031: #Check for ISS retirement year
-            return {
-                "latitude": latitude,
-                "longitude": longitude,
-                "location": "South Pacific Ocean",
-                "note": "The ISS has been deorbited and this is its landing site."
-            }
         point = Point(longitude, latitude)
 
         possible_ocean_idxs = list(oceans.sindex.intersection(point.bounds))
@@ -87,3 +80,18 @@ async def iss_location():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+# helpers.py
+from datetime import datetime, timezone
+
+def iss_retirement_check(year: int):
+    if year is None:
+        year = datetime.now(timezone.utc).year
+
+    if year >= 2031:
+        return {
+            "location": "South Pacific Ocean",
+            "note": "The ISS has been deorbited and this is its landing site."
+        }
+    return None
+

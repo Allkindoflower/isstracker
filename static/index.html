@@ -2,19 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ISS Tracker Map</title>
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet/dist/leaflet.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
-  #map { height: 90vh; width: 100%; }
-  body { margin: 0; font-family: Arial, sans-serif; }
-  #info { padding: 10px; background: #fff; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+  }
+
+  #map {
+    height: 100%;
+    width: 100%;
+  }
+
+  #info {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    font-weight: 600;
+    z-index: 1000;
+    text-align: center;
+    min-width: 250px;
+  }
 </style>
 </head>
 <body>
+
 <div id="map"></div>
 <div id="info">Loading ISS location...</div>
 
@@ -24,9 +45,10 @@
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  let marker = L.marker([0, 0]).addTo(map);
+  const marker = L.marker([0, 0]).addTo(map);
 
   async function updateISS() {
     try {
@@ -34,6 +56,7 @@
       const data = await res.json();
 
       const { latitude, longitude, location } = data;
+
       marker.setLatLng([latitude, longitude]);
       map.setView([latitude, longitude], 4);
 
@@ -41,14 +64,16 @@
         `ISS is currently over: ${location} (Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)})`;
     } catch (e) {
       document.getElementById('info').textContent = 'Failed to load ISS location.';
+      console.error(e);
     }
   }
 
   // Initial load
   updateISS();
 
-  // Update every 5 seconds
-  setInterval(updateISS, 5000);
+  // Update every 10 seconds
+  setInterval(updateISS, 10000);
 </script>
+
 </body>
 </html>
