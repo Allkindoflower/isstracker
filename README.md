@@ -49,6 +49,13 @@ Returns the current ISS position along with the country or ocean it is above.
 ```json
 [
   { "name": "Canada" },
+]
+```
+
+...or:
+
+```json
+[
   { "name": "North Atlantic Ocean" }
 ]
 ```
