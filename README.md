@@ -25,6 +25,17 @@ Because I’m curious about space and coding, and I wanted to combine the two.
 
 ---
 
+## ISS Tracker in action:
+
+
+<img width="475" height="476" alt="Screenshot 2025-09-14 035035" src="https://github.com/user-attachments/assets/f9b14ffa-501d-4760-ac38-a608c56701a9" />
+
+<img width="419" height="483" alt="Screenshot 2025-09-14 035017" src="https://github.com/user-attachments/assets/68b3ae9e-d159-48ac-91c4-849835a5968d" />
+
+
+
+---
+
 FEATURES
 
 - Fetch live ISS coordinates from a public API  
