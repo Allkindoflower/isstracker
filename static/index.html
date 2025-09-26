@@ -51,22 +51,29 @@
   const marker = L.marker([0, 0]).addTo(map);
 
   async function updateISS() {
-    try {
-      const res = await fetch('/iss-location');
-      const data = await res.json();
+  try {
+    const res = await fetch('/iss-location');
 
-      const { latitude, longitude, location } = data;
-
-      marker.setLatLng([latitude, longitude]);
-      map.setView([latitude, longitude], 4);
-
-      document.getElementById('info').textContent = 
-        `ISS is currently over: ${location} (Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)})`;
-    } catch (e) {
-      document.getElementById('info').textContent = 'Failed to load ISS location.';
-      console.error(e);
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Server error ${res.status}: ${errorText}`);
     }
+
+    const data = await res.json();
+    const { latitude, longitude, location } = data;
+
+    marker.setLatLng([latitude, longitude]);
+    map.setView([latitude, longitude], 4);
+
+    document.getElementById('info').textContent = 
+      `ISS is currently over: ${location} (Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)})`;
+
+  } catch (e) {
+    document.getElementById('info').textContent = `Failed to load ISS location: ${e.message}`;
+    console.error(e);
   }
+}
+
 
   // Initial load
   updateISS();

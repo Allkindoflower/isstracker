@@ -2,15 +2,16 @@
 # The API will automatically return the landing site and a note
 # instead of live coordinates, so no manual updates are required.
 
+#TODO: fix failed location finding
 
+from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 import requests
 import os
 import geopandas as gpd
 from shapely.geometry import Point
-import dotenv
-from datetime import datetime, timezone
+import dotenv   
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
@@ -37,6 +38,15 @@ oceans_path = os.path.join(data_dir, 'oceans.geojson')
 lands = gpd.read_file(lands_path)
 oceans = gpd.read_file(oceans_path)
 
+def iss_retirement_check(int):
+    year = datetime.now(timezone.utc).year
+    if year >= 2031:
+        return {
+            "location": "South Pacific Ocean",
+            "note": "The ISS has been deorbited and this is its landing site."
+        }
+    return None
+
 @app.get("/")
 async def root():
     return RedirectResponse(url="/static/index.html")\
@@ -46,11 +56,11 @@ async def iss_location():
     url_iss = os.getenv('url_iss')
     if not url_iss:
         raise HTTPException(status_code=500, detail="ISS API URL not configured")
-    retirement = iss_retirement_check()
+    retirement = iss_retirement_check(int)
     if retirement:
         return retirement
     try:
-        response = requests.get(url_iss, timeout=15)
+        response = requests.get(url_iss, timeout=10)
         response.raise_for_status()
         data = response.json()
         longitude = float(data['iss_position']['longitude'])
@@ -80,18 +90,3 @@ async def iss_location():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-# helpers.py
-from datetime import datetime, timezone
-
-def iss_retirement_check(year: int):
-    if year is None:
-        year = datetime.now(timezone.utc).year
-
-    if year >= 2031:
-        return {
-            "location": "South Pacific Ocean",
-            "note": "The ISS has been deorbited and this is its landing site."
-        }
-    return None
-
