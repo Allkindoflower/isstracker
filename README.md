@@ -7,12 +7,10 @@ A FastAPI web application that tracks the **International Space Station's (ISS)*
 ## Table of Contents
 
 - [About](#about)
-- [Features](#features)
 - [API Endpoints](#api-endpoints)
 - [Example Response](#example-response)
 - [Getting Started](#getting-started)
 - [Tech Stack](#tech-stack)
-- [Future Improvements](#future-improvements)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -24,6 +22,17 @@ This project fetches live ISS latitude and longitude from a public API, uses det
 
 **Why this project?**  
 Because I’m curious about space and coding, and I wanted to combine the two.
+
+---
+
+## ISS Tracker in action:
+
+
+<img width="475" height="476" alt="Screenshot 2025-09-14 035035" src="https://github.com/user-attachments/assets/f9b14ffa-501d-4760-ac38-a608c56701a9" />
+
+<img width="419" height="483" alt="Screenshot 2025-09-14 035017" src="https://github.com/user-attachments/assets/68b3ae9e-d159-48ac-91c4-849835a5968d" />
+
+
 
 ---
 
@@ -51,51 +60,65 @@ Returns the current ISS position along with the country or ocean it is above.
 ```json
 [
   { "name": "Canada" },
+]
+```
+
+...or:
+
+```json
+[
   { "name": "North Atlantic Ocean" }
 ]
 ```
+# ISS Tracker
+
 ## Getting Started
 
 ### Installation
 
+#### 1. Fork the repository on GitHub
 
-### Fork the repository on GitHub
-
-### Clone the repository
+#### 2. Clone the repository
+```bash
 git clone https://github.com/YOUR-USERNAME/isstracker
 cd isstracker
+```
 
-
-### Create a virtual environment (Optional)
+#### 3. Create a virtual environment (Optional)
+```bash
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
+```
 
-### Create a .env file (recommended)
+#### 4. Create a .env file (recommended)
+```bash
 echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
-or manually copy the URL into the .env file
+```
+*or manually copy the URL into the .env file*
 
-### Install dependencies
+#### 5. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
-### Start FastAPI server in development mode with auto-reload
+#### 6. Start FastAPI server in development mode with auto-reload
+```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
 ## Live Demo
 
-- Find live demo here: https://isstracker-upgl.onrender.com
+**Find live demo here:** https://isstracker-upgl.onrender.com
 
+## Tech Stack
 
-### Tech Stack
-
-- **Language:** Python 3.8+  
-- **Framework:** FastAPI  
-- **Server:** Uvicorn (ASGI)  
-- **Geospatial:** GeoPandas, Shapely  
-- **API Requests:** Requests  
-- **Environment Variables:** python-dotenv  
-
----
+- **Language:** Python 3.8+
+- **Framework:** FastAPI
+- **Server:** Uvicorn (ASGI)
+- **Geospatial:** GeoPandas, Shapely
+- **API Requests:** Requests
+- **Environment Variables:** python-dotenv
 
 ## Contributing
 
