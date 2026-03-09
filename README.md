@@ -1,0 +1,136 @@
+# ISS Location Tracker
+
+A FastAPI web application that tracks the **International Space Station's (ISS)** current position and tells you which country or ocean it is flying over — using real geospatial data.
+
+---
+
+## Table of Contents
+
+- [About](#about)
+- [API Endpoints](#api-endpoints)
+- [Example Response](#example-response)
+- [Getting Started](#getting-started)
+- [Tech Stack](#tech-stack)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## About
+
+This project fetches live ISS latitude and longitude from a public API, uses detailed country and ocean boundaries (Natural Earth datasets), and efficiently determines whether the ISS is over land or water. It provides this data via REST API endpoints in real-time.
+
+**Why this project?**  
+Because I’m curious about space and coding, and I wanted to combine the two.
+
+---
+
+## ISS Tracker in action:
+
+
+<img width="475" height="476" alt="Screenshot 2025-09-14 035035" src="https://github.com/user-attachments/assets/f9b14ffa-501d-4760-ac38-a608c56701a9" />
+
+<img width="419" height="483" alt="Screenshot 2025-09-14 035017" src="https://github.com/user-attachments/assets/68b3ae9e-d159-48ac-91c4-849835a5968d" />
+
+
+
+---
+
+FEATURES
+
+- Fetch live ISS coordinates from a public API  
+- Use geospatial data with GeoPandas and Shapely  
+- Determine whether the ISS is over land or ocean  
+- REST API endpoints returning JSON  
+- Efficient handling of large geodata (polygon simplification, indexing)  
+- Securely handle environment variables for external APIs  
+
+---
+
+## API Endpoints
+
+### `GET /iss-location`
+
+Returns the current ISS position along with the country or ocean it is above.
+
+---
+
+## Example Response
+
+```json
+[
+  { "name": "Canada" },
+]
+```
+
+...or:
+
+```json
+[
+  { "name": "North Atlantic Ocean" }
+]
+```
+# ISS Tracker
+
+## Getting Started
+
+### Installation
+
+#### 1. Fork the repository on GitHub
+
+#### 2. Clone the repository
+```bash
+git clone https://github.com/YOUR-USERNAME/isstracker
+cd isstracker
+```
+
+#### 3. Create a virtual environment (Optional)
+```bash
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+```
+
+#### 4. Create a .env file (recommended)
+```bash
+echo "URL_ISS=https://api.open-notify.org/iss-now.json" > .env
+```
+*or manually copy the URL into the .env file*
+
+#### 5. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+#### 6. Start FastAPI server in development mode with auto-reload
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+## Live Demo
+
+**Find live demo here:** https://isstracker-upgl.onrender.com
+
+## Tech Stack
+
+- **Language:** Python 3.8+
+- **Framework:** FastAPI
+- **Server:** Uvicorn (ASGI)
+- **Geospatial:** GeoPandas, Shapely
+- **API Requests:** Requests
+- **Environment Variables:** python-dotenv
+
+## Contributing
+
+Feel free to open issues or submit pull requests.  
+Contact me at **bastugugur85@gmail.com** for bug reports, suggestions, or collaboration.
+
+---
+
+## License
+
+This project is licensed under the **MIT License** — Uğur Baştuğ
+
+## Additional Notes
+
+- The ISS is scheduled to be deorbited and landed in the ocean around 2030. I plan to hardcode the landing site in the app at that time. The project may be updated again if revisited in the future.
