@@ -2,8 +2,6 @@
 # The API will automatically return the landing site and a note
 # instead of live coordinates, so no manual updates are required.
 
-#TODO: fix failed location finding
-
 from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
