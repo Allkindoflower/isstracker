@@ -38,7 +38,7 @@ oceans_path = os.path.join(data_dir, 'oceans.geojson')
 lands = gpd.read_file(lands_path)
 oceans = gpd.read_file(oceans_path)
 
-def iss_retirement_check(int):
+def iss_retirement_check():
     year = datetime.now(timezone.utc).year
     if year >= 2031:
         return {
